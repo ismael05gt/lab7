@@ -1,113 +1,106 @@
 #include <iostream>
-#include <string>
 #include <vector>
-using namespace std;
-class Profesor
-{
-private:
-	string cursos;
-	string titulo;
-public:
-	Profesor(string cursos, string titulo) {
-		this->cursos = cursos;
-		this->titulo = titulo;
+#include <string>
 
-	}
-	void mostrardatos() {
-		cout << "Cursos: " << cursos << endl;
-		cout << "Titulo: " << titulo << endl;
-	};
-	void getcurso(string cursos) {
-		this->cursos = cursos;
-	};
-	void gettitulo(string titulo) {
-		this->titulo = titulo;
-	};
-};
-class catedratico : private Profesor
+using namespace std;
+
+class estudiante
 {
 private:
 	string nombre;
-	string apellido;
-
+	int edad;
+	int carnet;
 public:
-	catedratico(string nombre, string apellido, string cursos, string titulo) : Profesor(cursos, titulo) {
-		this->nombre = nombre;
-		this->apellido = apellido;
+	estudiante(string _nombre, int _edad, int _carnet)
+	{
+		this->nombre = _nombre;
+		this->edad = _edad;
+		this->carnet = _carnet;
 	}
-	void mostrardatos1() {
+	void mostrar()
+	{
 		cout << "Nombre: " << nombre << endl;
-		cout << "Apellido: " << apellido << endl;
-		Profesor::mostrardatos();
-	};
-
-
-
+		cout << "Edad: " << edad << endl;
+		cout << "Carnet: " << carnet << endl;
+	}
 };
-class aniosclase : public catedratico
+
+class curso : public estudiante
 {
 private:
-	int anios;
-	string clase;
+	string nombre_curso;
+	int codigo_curso;
 public:
-	aniosclase(int anios, string clase, string nombre, string apellido, string cursos, string titulo) : catedratico(nombre, apellido, cursos, titulo) {
-		this->anios = anios;
-		this->clase = clase;
+	curso(string _nombre_curso, int _codigo_curso, string _nombre, int _edad, int _carnet) : estudiante(_nombre, _edad, _carnet)
+	{
+		this->nombre_curso = _nombre_curso;
+		this->codigo_curso = _codigo_curso;
 	}
-	
-	void mostrardatos2() {
-		system("cls");
-		cout << "Anios dando clase: " << anios << endl;
-		cout << "Clase que daba: " << clase << endl;
-		catedratico::mostrardatos1();
-	};
-
+	void mostrarcurso()
+	{
+		mostrar();
+		cout << "Nombre del curso: " << nombre_curso << endl;
+		cout << "Codigo del curso: " << codigo_curso << endl;
+	}
 };
-class estudiantesacarg:public aniosclase
+
+class promedio : public curso
 {
 private:
-	string estudiantegrado;
-	int cantidad;
+	float promedio_estudiante;
 public:
-	estudiantesacarg(string estudiantegrado, int cantidad, int anios, string clase, string nombre, string apellido, string cursos, string titulo) : aniosclase(anios, clase, nombre, apellido, cursos, titulo) {
-		this->estudiantegrado = estudiantegrado;
-		this->cantidad = cantidad;
+	promedio(string _nombre_curso, int _codigo_curso, string _nombre, int _edad, int _carnet, float _prom) : curso(_nombre_curso, _codigo_curso, _nombre, _edad, _carnet)
+	{
+		this->promedio_estudiante = _prom;
 	}
-	void mostrardatos3() {
-		system("cls");
-		cout << "Estudiantes a cargo: " << estudiantegrado << endl;
-		cout << "Cantidad de estudiantes: " << cantidad << endl;
-		aniosclase::mostrardatos2();
-	};
+	void mostrarpromedio()
+	{
+		mostrarcurso();
 
+		cout << "El promedio del estudiante es: " << promedio_estudiante << endl;
+	}
+};
+
+class asistencia : public promedio
+{
+private:
+	float porcentaje_asistencia;
+public:
+	asistencia(string _nombre_curso, int _codigo_curso, string _nombre, int _edad, int _carnet, float _prom, float _porcentaje_asistencia) : promedio(_nombre_curso, _codigo_curso, _nombre, _edad, _carnet, _prom)
+	{
+		this->porcentaje_asistencia = _porcentaje_asistencia;
+	}
+	void mostrarasistencia()
+	{
+		mostrarpromedio();
+		cout << "El porcentaje de asistencia del estudiante es: " << porcentaje_asistencia << "%" << endl;
+	}
 
 };
 
 int main() {
-	string nombre, apellido, curso, titulo, clase, estudiantesacar;
-	int anios, cantidad;
+	string nom_estudiante, nombrecurso;
+	int carnet, edad, codigocurso;
+	float porcentaje_asistencia, promedioestu;
 
-	cout << "Ingrese el nombre del catedratico: ";
-	getline(cin, nombre);
+	cout << "Ingrese el nombre del estudiante: ";
+	getline(cin, nom_estudiante);
+	cout << "Ingrese la edad del estudiante: ";
+	cin >> edad;
+	cout << "Ingrese el carnet del estudiante: ";
+	cin >> carnet;
+	cout << "Ingrese el porcentaje de asistencia del estudiante: ";
+	cin >> porcentaje_asistencia;
+	cout << "Ingrese el codigo del curso: ";
+	cin >> codigocurso;
+	cout << "Ingrese el promedio del estudiante: ";
+	cin >> promedioestu;
+	cin.ignore();
+	cout << "Ingrese el nombre del curso: ";
+	getline(cin, nombrecurso);
 
-	cout << "Ingrese el apellido del catedratico: ";
-	getline(cin, apellido);
-
-	cout << "Ingrese los cursos que imparte (separados por comas): ";
-	getline(cin, curso);
-
-	cout << "Ingrese el titulo del profesor: ";
-	getline(cin, titulo);
-	cout << "ingrese anios dando clase: ";
-	cin >> anios;
-	cout << "ingrese la clase que daba: ";
-	cin >> clase;
-	cout << "ingrese estudiantes a cargo: ";
-	getline(cin, estudiantesacar);
-	cout << "ingrese cantidad de estudiantes: ";
-	cin >> cantidad;
-	estudiantesacarg catedratico1(estudiantesacar, cantidad, anios, clase, nombre, apellido, curso, titulo);	
-	catedratico1.mostrardatos3();
+	asistencia est1(nombrecurso, codigocurso, nom_estudiante, edad, carnet, promedioestu, porcentaje_asistencia);
+	est1.mostrarasistencia();
 
 	return 0;
 }
