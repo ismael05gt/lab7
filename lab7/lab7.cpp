@@ -1,113 +1,78 @@
 #include <iostream>
 #include <string>
-#include <vector>
 using namespace std;
-class Profesor
-{
-private:
-	string cursos;
-	string titulo;
-public:
-	Profesor(string cursos, string titulo) {
-		this->cursos = cursos;
-		this->titulo = titulo;
 
-	}
-	void mostrardatos() {
-		cout << "Cursos: " << cursos << endl;
-		cout << "Titulo: " << titulo << endl;
-	};
-	void getcurso(string cursos) {
-		this->cursos = cursos;
-	};
-	void gettitulo(string titulo) {
-		this->titulo = titulo;
-	};
+// Superclase Carro
+class Carro {
+protected:
+    string marca;
+    string modelo;
+private:
+    int anio;  // Cambiado 'año' por 'anio' para evitar problemas de codificación
+public:
+    Carro(string m, string mod, int a) : marca(m), modelo(mod), anio(a) {}
+    virtual void mostrarInfo() {
+        cout << "Marca: " << marca << endl;
+        cout << "Modelo: " << modelo << endl;
+        cout << "Anio: " << anio << endl;
+    }
+    virtual ~Carro() {}
 };
-class catedratico : private Profesor
-{
+
+// Clase derivada CarroDeportivo
+class CarroDeportivo : public Carro {
 private:
-	string nombre;
-	string apellido;
-
+    int velocidadMaxima;
 public:
-	catedratico(string nombre, string apellido, string cursos, string titulo) : Profesor(cursos, titulo) {
-		this->nombre = nombre;
-		this->apellido = apellido;
-	}
-	void mostrardatos1() {
-		cout << "Nombre: " << nombre << endl;
-		cout << "Apellido: " << apellido << endl;
-		Profesor::mostrardatos();
-	};
-
-
-
+    CarroDeportivo(string m, string mod, int a, int v) : Carro(m, mod, a), velocidadMaxima(v) {}
+    void mostrarInfo() override {
+        Carro::mostrarInfo();
+        cout << "Velocidad Maxima: " << velocidadMaxima << " km/h" << endl;
+    }
 };
-class aniosclase : public catedratico
-{
+
+// Clase derivada CarroDeLujo
+class CarroDeLujo : public Carro {
 private:
-	int anios;
-	string clase;
+    string tipoInterior;
 public:
-	aniosclase(int anios, string clase, string nombre, string apellido, string cursos, string titulo) : catedratico(nombre, apellido, cursos, titulo) {
-		this->anios = anios;
-		this->clase = clase;
-	}
-
-	void mostrardatos2() {
-		system("cls");
-		cout << "Anios dando clase: " << anios << endl;
-		cout << "Clase que daba: " << clase << endl;
-		catedratico::mostrardatos1();
-	};
-
+    CarroDeLujo(string m, string mod, int a, string t) : Carro(m, mod, a), tipoInterior(t) {}
+    void mostrarInfo() override {
+        Carro::mostrarInfo();
+        cout << "Tipo de Interior: " << tipoInterior << endl;
+    }
 };
-class estudiantesacarg :public aniosclase
-{
+
+// Clase derivada CarroEconomico
+class CarroEconomico : public Carro {  // Cambiado 'CarroEconómico' por 'CarroEconomico'
 private:
-	string estudiantegrado;
-	int cantidad;
+    float consumoCombustible;
 public:
-	estudiantesacarg(string estudiantegrado, int cantidad, int anios, string clase, string nombre, string apellido, string cursos, string titulo) : aniosclase(anios, clase, nombre, apellido, cursos, titulo) {
-		this->estudiantegrado = estudiantegrado;
-		this->cantidad = cantidad;
-	}
-	void mostrardatos3() {
-		system("cls");
-		cout << "Estudiantes a cargo: " << estudiantegrado << endl;
-		cout << "Cantidad de estudiantes: " << cantidad << endl;
-		aniosclase::mostrardatos2();
-	};
-
-
+    CarroEconomico(string m, string mod, int a, float c) : Carro(m, mod, a), consumoCombustible(c) {}
+    void mostrarInfo() override {
+        Carro::mostrarInfo();
+        cout << "Consumo de Combustible: " << consumoCombustible << " L/100km" << endl;
+    }
 };
 
 int main() {
-	string nombre, apellido, curso, titulo, clase, estudiantesacar;
-	int anios, cantidad;
+    // Crear objetos de cada tipo de carro
+    CarroDeportivo deportivo("Ferrari", "488 GTB", 2021, 340);
+    CarroDeLujo lujo("Mercedes", "S-Class", 2023, "Cuero y madera");
+    CarroEconomico economico("Toyota", "Corolla", 2022, 6.5);
 
-	cout << "Ingrese el nombre del catedratico: ";
-	getline(cin, nombre);
+    // Mostrar información de cada carro
+    cout << "Carro Deportivo:" << endl;
+    deportivo.mostrarInfo();
+    cout << endl;
 
-	cout << "Ingrese el apellido del catedratico: ";
-	getline(cin, apellido);
+    cout << "Carro de Lujo:" << endl;
+    lujo.mostrarInfo();
+    cout << endl;
 
-	cout << "Ingrese los cursos que imparte (separados por comas): ";
-	getline(cin, curso);
+    cout << "Carro Economico:" << endl;
+    economico.mostrarInfo();
+    cout << endl;
 
-	cout << "Ingrese el titulo del profesor: ";
-	getline(cin, titulo);
-	cout << "ingrese anios dando clase: ";
-	cin >> anios;
-	cout << "ingrese la clase que daba: ";
-	cin >> clase;
-	cout << "ingrese estudiantes a cargo: ";
-	getline(cin, estudiantesacar);
-	cout << "ingrese cantidad de estudiantes: ";
-	cin >> cantidad;
-	estudiantesacarg catedratico1(estudiantesacar, cantidad, anios, clase, nombre, apellido, curso, titulo);
-	catedratico1.mostrardatos3();
-
-	return 0;
+    return 0;
 }
